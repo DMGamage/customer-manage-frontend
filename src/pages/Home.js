@@ -3,16 +3,16 @@ import axios from 'axios'
 
 export default function Home() {
 
-    const [users,setUsers] =useState([])
+    const [customers,setCustomers] =useState([])
 
     useEffect(()=>{
-        loadUsers();
+        loadCustomers();
 
     },[])
 
-    const loadUsers= async ()=>{ 
+    const loadCustomers= async ()=>{ 
         const result=await axios.get("http://localhost:8080/users");
-        setUsers(result.data)
+        setCustomers(result.data)
 
     }
   return (
@@ -25,16 +25,22 @@ export default function Home() {
       <th scope="col">First Name</th>
       <th scope="col">User Name</th>
       <th scope="col">Email</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     {
-        users.map((user,index)=>(
+        customers.map((customer,index)=>(
     <tr>
       <th scope="row" key={index }>{index+1}</th>
-      <td>{user.name}</td>
-      <td>{user.username}</td>
-      <td>{user.email}</td>
+      <td>{customer.name}</td>
+      <td>{customer.username}</td>
+      <td>{customer.email}</td>
+      <td>
+        <button className="btn btn-primary mx-2">View</button>
+        <button className="btn btn-outline-primary mx-2">Edit</button>
+        <button className="btn btn-danger mx-2">Delete</button>
+      </td>
     </tr>
 
         ))
