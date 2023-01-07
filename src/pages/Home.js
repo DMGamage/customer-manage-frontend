@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { Link, useParams } from "react-router-dom";
 
 export default function Home() {
 
@@ -8,13 +9,21 @@ export default function Home() {
     useEffect(()=>{
         loadCustomers();
 
-    },[])
+    },[]);
+
+    const { id } = useParams();
+    
 
     const loadCustomers= async ()=>{ 
         const result=await axios.get("http://localhost:8080/users");
         setCustomers(result.data)
 
     }
+    const deleteCustomer = async (id) => {
+        await axios.delete(`http://localhost:8080/user/${id}`);
+        loadCustomers();
+      };
+
   return (
     <div className='container'>
         <div className='py-4'>
@@ -37,9 +46,14 @@ export default function Home() {
       <td>{customer.username}</td>
       <td>{customer.email}</td>
       <td>
-        <button className="btn btn-primary mx-2">View</button>
-        <button className="btn btn-outline-primary mx-2">Edit</button>
-        <button className="btn btn-danger mx-2">Delete</button>
+      <Link className="btn btn-primary mx-2" to={`/viewcustomer/${customer.id}`} > View
+                  </Link>
+        <Link className="btn btn-outline-primary mx-2"
+        to={`/editcustomer/${customer.id}`}
+        >Edit</Link>
+        <button className="btn btn-danger mx-2" onClick={() => deleteCustomer(customer.id)} >
+                    Delete
+                  </button>
       </td>
     </tr>
 
